@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="x-ua-compatible" content="ie=edge">
+	<title>WebApp vanila javascript with handlebars</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="css/normalize.css">
+	<link rel="stylesheet" href="css/main.css">
+	<script src="js/vendor/modernizr-2.8.3.min.js"></script>
+</head>
+<body role="application">
+	<header>
+	  <div class="layout-wrap">
+	    <a id="logo" href="#">netcraft<img src="img/logo-netcraft.svg" alt="netcraft" tabindex="0"></a>
+
+	    <form class="search-box" method="get" role="search">
+	        <input type="search" name="q" placeholder="search" tabindex="0">
+	    </form>
+	  </div>
+	</header>
+
+	<div class="page-body layout-wrap" role="main">
+	    <div class="notifications hidden">
+	    </div>
+
+	    <nav role="navigation">
+	       
+	    </nav>
+
+	    <div class="tabs" aria-multiselectable="false">
+	        <ul class="buttons" role="tab-button">
+	            <li class=""><a href="#quick-reports" data="qr" tabindex="0" role="tab" aria-controls="quick-reports" aria-owns="quick-reports"><i class="icon-external-link" aria-hidden="true"></i> Quick Reports</a>
+	            </li>
+	            <li><a href="#fmy-folders" tabindex="0" role="tab" aria-controls="fmy-folders" aria-owns="fmy-folders"><i class="icon-star-o" aria-hidden="true"></i> My Folders</a>
+	            </li>
+	            <li><a href="#my-team-folders" data="mtf" tabindex="0" role="tab" aria-controls="my-team-folders" aria-owns="my-team-folders"><i class="icon-folder-open-o" aria-hidden="true"></i>My Team Folders</a>
+	            </li>
+	            <li><a href="#public-folders" tabindex="0" role="tab" aria-controls="public-folders" aria-owns="public-folders"><i class="icon-copy" aria-hidden="true"></i>Public Folders</a>
+	            </li>
+	        </ul>      
+	    </div>
+	</div>
+	<script src="js/vendor/handlebars-v4.0.5.js"></script>
+	<script src="js/plugins.js"></script>
+	<script src="js/main.js"></script>
+	<script src="js/template.js"></script>
+	<script src="js/ajaxLoader.js"></script>
+
+
+ <script id='nav-template' type="text/template">
+	{{#each this}}
+        <div class="nav-section" background="url(img/{{icon}}.png)">
+            <p>{{{label}}}</p>
+            <div class="menu" role="menubar">
+                <div class="menu-hint" tabindex="0">
+                    <p>{{actionsLabel}}</p>
+                    <div class="arrow"></div>
+                </div>
+
+                <ul class="action-list">
+					{{#each actions}}
+	                	<li><a href="{{url}}">{{label}}</a></li>
+	                {{/each}}
+                </ul>
+            </div>
+        </div>
+    {{/each}}
+</script>
+<script id='tab-template' type="text/template">
+	{{#each this}}
+		<div id='{{id}}' class="hidden" frame='{{frame}}' role="tabpanel" aria-describedby='{{describe}}'>
+
+	    	<div class="settings">
+	    		<ul>
+	    			{{#if popup}}
+		    			<li>
+		    				<a href="" class="toggle" data="{{name}}" tabindex="0">
+		    					<img src="img/settings.png" alt="settings button">
+							</a>
+						</li>
+						
+		    			<li>
+		    				<a href="{{url}}" class="expand hidden" data="{{name}}" target='_blank' tabindex="0">
+		    					<img src="img/expand.png" alt="expand button">
+							</a>
+						</li>
+					{{else}}
+						<li>
+		    				<a href="{{url}}" class="expand" data="{{name}}" target='_blank' tabindex="0">
+		    					<img src="img/expand.png" alt="expand button">
+							</a>
+						</li>
+					{{/if}}
+					
+	    		</ul>
+
+	    		{{#if popup}}
+	    			<select class="drop-down hidden" data={{name}}></select>
+	        		<div class="popup-menu" data="{{name}}">
+	        			<form novalidate>
+	        				{{#each popup}}
+		        				<fieldset>
+			        				<legend>Report 0{{place}}:</legend>
+		        					<div class="input-validation">
+		        						<label for="{{id}}-{{name}}{{place}}">Name:</label>
+			        					<input id="{{id}}-{{name}}{{place}}" type="text" placeholder="Enter site {{name}}" aria-required="true" aria-labelledby="{{id}}-{{name}}{{place}}">
+			        					<p class="{{name}}-message hidden">Invalid {{name}}</p>
+		        					</div>
+		        					<div class="input-validation">
+		        						<label for="{{id}}-{{url}}{{place}}">URL:</label>
+			        					<input id="{{id}}-{{url}}{{place}}" type="text" placeholder="Enter site {{url}}" aria-required="true" aria-labelledby="{{id}}-{{url}}{{place}}">
+			        					<p class="{{url}}-message hidden">Invalid {{name}}</p>
+		        					</div>
+			        			</fieldset>
+	        				{{/each}}
+	        				<input class="popup-button" type="reset" value="cancel" data="{{name}}" role="reset">
+		        			<input class="popup-button" type="submit" value="save" data="{{name}}" role="submit">
+	        			</form>
+	        		</div>
+	    		{{/if}}
+	    	</div>
+	    	<iframe class="frame" src="{{url}}" data="{{name}}"></iframe>
+	    </div>
+    {{/each}}
+</script>
+</body>
+</html>
+
